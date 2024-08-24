@@ -3,222 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Quiz Maker</title>
+    <title>Job Board</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
         header {
-            text-align: center;
-            padding: 10px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .question-block {
-            margin-bottom: 20px;
-        }
-        .question-block input {
-            margin-right: 10px;
-        }
-        button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
+            padding: 15px;
+            text-align: center;
         }
-        button:hover {
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .job-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        .job-item:hover {
+            background-color: #f1f1f1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .job-title {
+            font-size: 1.4em;
+            margin: 0;
+        }
+        .job-toggle {
+            cursor: pointer;
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .job-description {
+            display: none;
+            margin-top: 10px;
+            color: #333;
+        }
+        .apply-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .apply-button:hover {
             background-color: #45a049;
         }
-        #quiz-result {
+        /* Modal styles */
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 {
+            margin: 0;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+        }
+        .modal-close:hover {
+            color: #4CAF50;
+        }
+        .modal-body input, .modal-body textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .modal-footer {
+            text-align: right;
+        }
+        .modal-footer button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .modal-footer button:hover {
+            background-color: #45a049;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .modal-content {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Online Quiz Maker</h1>
-        <p>Welcome! Create and take quizzes with ease.</p>
-    </header>
 
-    <div class="container" id="home-page">
-        <h2>Select an option:</h2>
-        <button onclick="showCreateQuiz()">Create a Quiz</button>
-        <button onclick="showQuizList()">Take a Quiz</button>
+<header>
+    <h1>Job Board</h1>
+</header>
+
+<div class="container">
+    <h2>Available Jobs</h2>
+    <div class="job-item">
+        <p class="job-title">Frontend Developer</p>
+        <span class="job-toggle" onclick="toggleDescription(this)">Show Description</span>
+        <p class="job-description">We are looking for a talented frontend developer who is proficient in HTML, CSS, and JavaScript. The role involves designing and implementing user interfaces for web applications.</p>
+        <button class="apply-button" onclick="openModal('Frontend Developer')">Apply Now</button>
     </div>
-
-    <!-- Quiz Creation -->
-    <div class="container" id="create-quiz-page" style="display:none;">
-        <h2>Create a Quiz</h2>
-        <form id="quizForm">
-            <label for="quizTitle">Quiz Title:</label><br>
-            <input type="text" id="quizTitle" name="quizTitle" required><br><br>
-            
-            <div id="questionContainer"></div>
-            
-            <button type="button" onclick="addQuestion()">Add Question</button>
-            <button type="submit">Save Quiz</button>
-        </form>
+    <div class="job-item">
+        <p class="job-title">Backend Developer</p>
+        <span class="job-toggle" onclick="toggleDescription(this)">Show Description</span>
+        <p class="job-description">Join our team as a backend developer with experience in Node.js and databases. Responsibilities include server-side logic and database management.</p>
+        <button class="apply-button" onclick="openModal('Backend Developer')">Apply Now</button>
     </div>
-
-    <!-- Quiz List -->
-    <div class="container" id="quiz-list-page" style="display:none;">
-        <h2>Available Quizzes</h2>
-        <ul id="quizList"></ul>
-        <button onclick="showHomePage()">Back</button>
+    <div class="job-item">
+        <p class="job-title">UI/UX Designer</p>
+        <span class="job-toggle" onclick="toggleDescription(this)">Show Description</span>
+        <p class="job-description">We need a UI/UX designer to create user-centered designs and improve the overall user experience of our products. Experience with design tools and user research is required.</p>
+        <button class="apply-button" onclick="openModal('UI/UX Designer')">Apply Now</button>
     </div>
+</div>
 
-    <!-- Quiz Taking -->
-    <div class="container" id="take-quiz-page" style="display:none;">
-        <h2 id="quizTitleDisplay"></h2>
-        <form id="quizQuestionsForm"></form>
+<!-- Modal -->
+<div id="applicationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Apply for <span id="modalJobTitle"></span></h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="applicationForm">
+                <input type="text" id="applicantName" name="name" placeholder="Your Full Name" required>
+                <input type="email" id="applicantEmail" name="email" placeholder="Your Email" required>
+                <textarea id="coverLetter" name="coverLetter" placeholder="Cover Letter" rows="5" required></textarea>
+                <div class="modal-footer">
+                    <button type="submit">Submit Application</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <!-- Quiz Results -->
-    <div class="container" id="quiz-result">
-        <h2>Quiz Results</h2>
-        <p id="quizScore"></p>
-        <button onclick="showQuizList()">Back to Quiz List</button>
-    </div>
-
-    <script>
-        let quizzes = [];
-        let currentQuizIndex = null;
-
-        // Show the quiz creation page
-        function showCreateQuiz() {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('create-quiz-page').style.display = 'block';
+<script>
+    // Toggle the visibility of the job description
+    function toggleDescription(element) {
+        const description = element.nextElementSibling;
+        if (description.style.display === 'block') {
+            description.style.display = 'none';
+            element.textContent = 'Show Description';
+        } else {
+            description.style.display = 'block';
+            element.textContent = 'Hide Description';
         }
+    }
 
-        // Show the quiz list page
-        function showQuizList() {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('create-quiz-page').style.display = 'none';
-            document.getElementById('take-quiz-page').style.display = 'none';
-            document.getElementById('quiz-result').style.display = 'none';
+    // Open the modal and set the job title
+    function openModal(jobTitle) {
+        document.getElementById('modalJobTitle').innerText = jobTitle;
+        document.getElementById('applicationModal').style.display = 'flex';
+    }
 
-            const quizListElement = document.getElementById('quizList');
-            quizListElement.innerHTML = '';
+    // Close the modal
+    function closeModal() {
+        document.getElementById('applicationModal').style.display = 'none';
+    }
 
-            quizzes.forEach((quiz, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<button onclick="startQuiz(${index})">${quiz.title}</button>`;
-                quizListElement.appendChild(listItem);
-            });
+    // Handle form submission
+    document.getElementById('applicationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        alert('Your application has been submitted!');
+        closeModal();
+    });
+</script>
 
-            document.getElementById('quiz-list-page').style.display = 'block';
-        }
-
-        // Show the home page
-        function showHomePage() {
-            document.getElementById('home-page').style.display = 'block';
-            document.getElementById('create-quiz-page').style.display = 'none';
-            document.getElementById('quiz-list-page').style.display = 'none';
-            document.getElementById('take-quiz-page').style.display = 'none';
-            document.getElementById('quiz-result').style.display = 'none';
-        }
-
-        // Add a question input field for quiz creation
-        function addQuestion() {
-            const questionContainer = document.getElementById('questionContainer');
-            const questionNumber = questionContainer.childElementCount + 1;
-
-            const questionBlock = document.createElement('div');
-            questionBlock.className = 'question-block';
-            questionBlock.innerHTML = `
-                <label for="question${questionNumber}">Question ${questionNumber}:</label><br>
-                <input type="text" id="question${questionNumber}" name="question${questionNumber}" required><br><br>
-                <label for="options${questionNumber}">Options (comma-separated):</label><br>
-                <input type="text" id="options${questionNumber}" name="options${questionNumber}" required><br><br>
-                <label for="correctAnswer${questionNumber}">Correct Answer:</label><br>
-                <input type="text" id="correctAnswer${questionNumber}" name="correctAnswer${questionNumber}" required><br><br>
-            `;
-
-            questionContainer.appendChild(questionBlock);
-        }
-
-        // Handle quiz form submission (save quiz)
-        document.getElementById('quizForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const title = document.getElementById('quizTitle').value;
-            const questions = [];
-
-            const questionBlocks = document.getElementById('questionContainer').children;
-            for (let i = 0; i < questionBlocks.length; i++) {
-                const questionText = questionBlocks[i].querySelector(`input[name=question${i + 1}]`).value;
-                const options = questionBlocks[i].querySelector(`input[name=options${i + 1}]`).value.split(',');
-                const correctAnswer = questionBlocks[i].querySelector(`input[name=correctAnswer${i + 1}]`).value;
-
-                questions.push({ questionText, options, correctAnswer });
-            }
-
-            const newQuiz = { title, questions };
-            quizzes.push(newQuiz);
-
-            // Reset form and redirect to quiz list
-            document.getElementById('quizForm').reset();
-            document.getElementById('questionContainer').innerHTML = '';
-            showQuizList();
-        });
-
-        // Start a quiz (display questions one at a time)
-        function startQuiz(index) {
-            currentQuizIndex = index;
-            const quiz = quizzes[index];
-
-            document.getElementById('quizTitleDisplay').innerText = quiz.title;
-            const quizQuestionsForm = document.getElementById('quizQuestionsForm');
-            quizQuestionsForm.innerHTML = '';
-
-            quiz.questions.forEach((question, qIndex) => {
-                const questionBlock = document.createElement('div');
-                questionBlock.className = 'question-block';
-                questionBlock.innerHTML = `
-                    <p>${question.questionText}</p>
-                    ${question.options.map((option, oIndex) => `
-                        <input type="radio" id="q${qIndex}o${oIndex}" name="question${qIndex}" value="${option.trim()}">
-                        <label for="q${qIndex}o${oIndex}">${option.trim()}</label><br>
-                    `).join('')}
-                `;
-                quizQuestionsForm.appendChild(questionBlock);
-            });
-
-            const submitButton = document.createElement('button');
-            submitButton.type = 'button';
-            submitButton.innerText = 'Submit Quiz';
-            submitButton.onclick = submitQuiz;
-            quizQuestionsForm.appendChild(submitButton);
-
-            document.getElementById('quiz-list-page').style.display = 'none';
-            document.getElementById('take-quiz-page').style.display = 'block';
-        }
-
-        // Submit the quiz and show results
-        function submitQuiz() {
-            const quiz = quizzes[currentQuizIndex];
-            let score = 0;
-
-            quiz.questions.forEach((question, qIndex) => {
-                const selectedOption = document.querySelector(`input[name="question${qIndex}"]:checked`);
-                if (selectedOption && selectedOption.value === question.correctAnswer.trim()) {
-                    score++;
-                }
-            });
-
-            document.getElementById('quizScore').innerText = `You scored ${score} out of ${quiz.questions.length}.`;
-            document.getElementById('take-quiz-page').style.display = 'none';
-            document.getElementById('quiz-result').style.display = 'block';
-        }
-    </script>
 </body>
 </html>
